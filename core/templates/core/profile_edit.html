@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ConectExperts Profile</title>
+        <link rel="stylesheet" href="{% static 'css/profile_edit.css' %}">
+    </head>
+    <body>
+    
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-picture">
+                <svg viewBox="0 0 200 200">
+                    <defs>
+                        <linearGradient id="avatar-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3498DB" />
+                            <stop offset="100%" style="stop-color:#2C3E50" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="100" cy="100" r="100" fill="url(#avatar-gradient)" />
+                    <circle cx="100" cy="85" r="30" fill="white" />
+                    <path d="M100 130 C 60 130 40 170 40 200 L160 200 C160 170 140 130 100 130" fill="white" />
+                </svg>
+            </div>
+            
+            <div class="profile-info">
+                <h1>Sarah Johnson</h1>
+                <div class="profile-niche">Digital Marketing Expert</div>
+                <p>Helping businesses grow their online presence through strategic digital marketing solutions.</p>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="window.location.href='{% url 'chat' %}'">Contact Me</button>
+                    <button class="btn btn-outline" onclick="window.location.href='{% url 'profile_editor' %}'">Edit Profile</button>
+                </div>
+            </div>
+        </div>
+    
+        <div class="section">
+            <h2 class="section-title">About Me</h2>
+            <p>With over 8 years of experience in digital marketing, I specialize in creating comprehensive marketing strategies that drive results. My expertise includes SEO, content marketing, social media management, and email marketing campaigns. I've helped numerous businesses achieve their marketing goals and establish a strong online presence.</p>
+        </div>
+    
+        <div class="section">
+            <h2 class="section-title">Portfolio</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <svg viewBox="0 0 250 200">
+                        <rect width="250" height="200" fill="#ECF0F1" />
+                        <text x="125" y="100" text-anchor="middle" fill="#3498DB" font-size="20">Project 1</text>
+                    </svg>
+                    <div class="portfolio-overlay">
+                        <h3>Digital Marketing Campaign</h3>
+                        <p>Increased client conversion by 150%</p>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <svg viewBox="0 0 250 200">
+                        <rect width="250" height="200" fill="#ECF0F1" />
+                        <text x="125" y="100" text-anchor="middle" fill="#3498DB" font-size="20">Project 2</text>
+                    </svg>
+                    <div class="portfolio-overlay">
+                        <h3>SEO Optimization</h3>
+                        <p>Achieved #1 ranking for key terms</p>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item">
+                    <svg viewBox="0 0 250 200">
+                        <rect width="250" height="200" fill="#ECF0F1" />
+                        <text x="125" y="100" text-anchor="middle" fill="#3498DB" font-size="20">Project 3</text>
+                    </svg>
+                    <div class="portfolio-overlay">
+                        <h3>Social Media Strategy</h3>
+                        <p>200% engagement increase</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    document.querySelectorAll('.btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            if(this.textContent === 'Contact Me') {
+                alert('Contact form will open here');
+            } else if(this.textContent === 'Edit Profile') {
+                alert('Edit profile mode will be activated');
+            }
+        });
+    });
+    
+    document.querySelectorAll('.portfolio-item').forEach(item => {
+        item.addEventListener('click', function() {
+            alert('Portfolio item details will open here');
+        });
+    });
+    </script>
+    
+    </body></html>

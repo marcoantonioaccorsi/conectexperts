@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Configurações da Conta | ConnectExperts</title>
+    <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">ConnectExperts</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#account" class="nav-link active">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            Conta
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#notifications" class="nav-link">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            Notificações
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#privacy" class="nav-link">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                            Privacidade
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <!-- Mensagens de sucesso ou erro -->
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <p class="message {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Informações Pessoais -->
+            <section class="section" id="personal-info">
+                <h2>Informações Pessoais</h2>
+                <!-- Form começa aqui -->
+                <form method="POST" action="{% url 'configuracoes_usuario' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+            
+                    <!-- Campos de Informações Pessoais -->
+                    <div class="form-group">
+                        {{ form.nome_completo.label_tag }}
+                        {{ form.nome_completo }}
+                        {{ form.nome_completo.errors }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.email.label_tag }}
+                        {{ form.email }}
+                        {{ form.email.errors }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.nova_senha.label_tag }}
+                        {{ form.nova_senha }}
+                        {{ form.nova_senha.errors }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.foto_perfil.label_tag }}
+                        {{ form.foto_perfil }}
+                        {{ form.foto_perfil.errors }}
+                    </div>
+            
+                <!-- Informações Profissionais -->
+                
+                    <h2>Informações Profissionais</h2>
+                    <div class="form-group">
+                        {{ form.tipo_conta.label_tag }}
+                        {{ form.tipo_conta }}
+                        {{ form.tipo_conta.errors }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.nicho.label_tag }}
+                        {{ form.nicho }}
+                        {{ form.nicho.errors }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.descricao.label_tag }}
+                        {{ form.descricao }}
+                        {{ form.descricao.errors }}
+                    </div>
+                
+            
+                <!-- Botão Único -->
+                <div class="form-group" style="text-align: center; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+                </form> <!-- Fechamento do formulário -->
+            </section>
+            
+
+            {% comment %} <!-- Preferências de Notificação -->
+            <section class="section" id="notifications">
+                <h2>Preferências de Notificação</h2>
+                <div class="toggle">
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span>Notificações por Email</span>
+                </div>
+                <div class="toggle">
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span>Notificações Push</span>
+                </div>
+                <div class="toggle">
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <span>Notificações por SMS</span>
+                </div>
+            </section> {% endcomment %}
+
+            <!-- Zona de Perigo -->
+            <section class="section" id="danger">
+                <h2>Excluir Conta</h2>
+                <p style="margin-bottom: 1rem">Uma vez que você excluir sua conta, não poderá recuperá-la. Por favor, tenha certeza disso.</p>
+                <form method="POST" action="{% url 'excluir_conta' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Excluir Conta</button>
+                </form>
+            </section>
+        </main>
+    </div>
+    <script src="{% static 'js/account_settings.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<html><head><base href="." /><meta charset="UTF-8" />
+    <title>ConectExperts Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%load static %}
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+    </head>
+    <body>
+    
+    <div class="sidebar">
+      <div class="chat-list">
+        <div class="chat-item active" data-user="John Doe" data-initials="JD" data-profile="johndoe" data-preview="Thanks for the detailed explanation!">
+          <div class="profile-pic">JD</div>
+          <div class="chat-details">
+            <h3>John Doe</h3>
+            <p>Thanks for the detailed explanation!</p>
+          </div>
+        </div>
+        <div class="chat-item" data-user="Alice Smith" data-initials="AS" data-profile="alicesmith" data-preview="When can we schedule the next meeting?">
+          <div class="profile-pic">AS</div>
+          <div class="chat-details">
+            <h3>Alice Smith</h3>
+            <p>When can we schedule the next meeting?</p>
+          </div>
+        </div>
+        <div class="chat-item" data-user="Robert Johnson" data-initials="RJ" data-profile="robertjohnson" data-preview="I'll send the documents shortly.">
+          <div class="profile-pic">RJ</div>
+          <div class="chat-details">
+            <h3>Robert Johnson</h3>
+            <p>I'll send the documents shortly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="main-chat">
+      <div class="chat-header">
+        <div class="user-info">
+          <div class="profile-pic">JD</div>
+          <h2>John Doe</h2>
+        </div>
+        <a href="https://conectexperts.com/profile/johndoe" class="btn profile-link">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="messages">
+        <div class="message received">
+          <p>Hi! I need some assistance with project planning.</p>
+          <div class="timestamp">10:30 AM</div>
+        </div>
+        <div class="message sent">
+          <p>Of course! I'd be happy to help. What specific aspects are you looking to plan?</p>
+          <div class="timestamp">10:32 AM</div>
+        </div>
+        <div class="message received">
+          <p>I'm trying to set up a timeline for a new software development project.</p>
+          <div class="timestamp">10:33 AM</div>
+        </div>
+      </div>
+      
+      <div class="chat-input">
+        <div class="input-container">
+          <button class="btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+              <line x1="9" y1="9" x2="9.01" y2="9"></line>
+              <line x1="15" y1="9" x2="15.01" y2="9"></line>
+            </svg>
+          </button>
+          <button class="btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+            </svg>
+          </button>
+          <input type="text" placeholder="Type your message...">
+          <button class="btn send">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const chatItems = document.querySelectorAll('.chat-item');
+      const input = document.querySelector('.input-container input');
+      const sendBtn = document.querySelector('.btn.send');
+      const userInfoName = document.querySelector('.user-info h2');
+      const userInfoPic = document.querySelector('.user-info .profile-pic');
+      const profileLink = document.querySelector('.profile-link');
+      const messagesContainer = document.querySelector('.messages');
+    
+      const chatHistory = {
+        'John Doe': [
+          { type: 'received', text: 'Hi! I need some assistance with project planning.', time: '10:30 AM' },
+          { type: 'sent', text: 'Of course! I\'d be happy to help. What specific aspects are you looking to plan?', time: '10:32 AM' },
+          { type: 'received', text: 'I\'m trying to set up a timeline for a new software development project.', time: '10:33 AM' }
+        ],
+        'Alice Smith': [
+          { type: 'received', text: 'Hello! When can we schedule the next meeting?', time: '9:45 AM' },
+          { type: 'sent', text: 'Hi Alice! How about tomorrow at 2 PM?', time: '9:47 AM' },
+          { type: 'received', text: 'That works perfectly for me!', time: '9:48 AM' }
+        ],
+        'Robert Johnson': [
+          { type: 'received', text: 'I\'m working on those documents you requested.', time: '11:20 AM' },
+          { type: 'sent', text: 'Great, thank you! When do you think they\'ll be ready?', time: '11:22 AM' },
+          { type: 'received', text: 'I\'ll send the documents shortly.', time: '11:25 AM' }
+        ]
+      };
+    
+      function loadChat(userName) {
+        messagesContainer.innerHTML = '';
+        const messages = chatHistory[userName];
+        messages.forEach(msg => {
+          const messageDiv = document.createElement('div');
+          messageDiv.className = `message ${msg.type}`;
+          messageDiv.innerHTML = `
+            <p>${msg.text}</p>
+            <div class="timestamp">${msg.time}</div>
+          `;
+          messagesContainer.appendChild(messageDiv);
+        });
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    
+      chatItems.forEach(item => {
+        item.addEventListener('click', () => {
+          chatItems.forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+          
+          const userName = item.dataset.user;
+          const initials = item.dataset.initials;
+          const profile = item.dataset.profile;
+          
+          userInfoName.textContent = userName;
+          userInfoPic.textContent = initials;
+          profileLink.href = `https://conectexperts.com/profile/${profile}`;
+          
+          loadChat(userName);
+        });
+      });
+    
+      const sendMessage = () => {
+        const text = input.value.trim();
+        if (text) {
+          const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const messageDiv = document.createElement('div');
+          messageDiv.className = 'message sent';
+          messageDiv.innerHTML = `
+            <p>${text}</p>
+            <div class="timestamp">${time}</div>
+          `;
+          
+          messagesContainer.appendChild(messageDiv);
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          
+          const activeChatUser = document.querySelector('.chat-item.active').dataset.user;
+          chatHistory[activeChatUser].push({
+            type: 'sent',
+            text: text,
+            time: time
+          });
+          
+          input.value = '';
+        }
+      };
+    
+      sendBtn.addEventListener('click', sendMessage);
+      input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+    });
+    </script>
+    </body></html>

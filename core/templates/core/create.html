@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="." />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Account | Platform Registration</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/create.css' %}">
+</head>
+<body>
+<div class="registration-container">
+    <!-- Barra de Progresso -->
+    <div class="progress-bar">
+        <div class="progress-step active">1</div>
+        <div class="progress-step">2</div>
+        <div class="progress-step">3</div>
+    </div>
+
+    <!-- Formulário de Registro -->
+    <form id="registrationForm" method="POST" enctype="multipart/form-data" action="{% url 'criar_conta' %}">
+        {% csrf_token %}
+
+        <!-- Renderização do Formulário com Django Forms -->
+        <div class="form-step active" id="step1">
+            <h2>Informações Básicas</h2>
+            <div class="form-group">
+                <label for="{{ formulario.nome_completo.id_for_label }}">Nome</label>
+                {{ formulario.nome_completo }}
+            </div>
+            <div class="form-group">
+                <label for="{{ formulario.email.id_for_label }}">Email</label>
+                {{ formulario.email }}
+                <span class="error-message" id="emailError" style="color: red; display: none;">Por favor, insira um e-mail válido.</span>
+            </div>
+            <div class="form-group">
+                <label for="{{ formulario.senha.id_for_label }}">Senha</label>
+                {{ formulario.senha }}
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn" onclick="validarEtapa1()">Próximo</button>
+            </div>
+        </div>
+
+        <div class="form-step" id="step2">
+            <h2>Detalhes da Conta</h2>
+            <div class="form-group">
+                <label for="{{ formulario.tipo_conta.id_for_label }}">Tipo de Conta</label>
+                {{ formulario.tipo_conta }}
+            </div>
+            <div class="form-group">
+                <label for="{{ formulario.nicho.id_for_label }}">Especialização (Opcional)</label>
+                {{ formulario.nicho }}
+            </div>
+            <div class="form-group">
+                <label for="{{ formulario.descricao.id_for_label }}">Descrição (Opcional)</label>
+                {{ formulario.descricao }}
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn" onclick="etapaAnterior(2)">Anterior</button>
+                <button type="button" class="btn" onclick="proximaEtapa(2)">Próximo</button>
+            </div>
+        </div>
+
+        <div class="form-step" id="step3">
+            <h2>Foto de Perfil</h2>
+            <div class="form-group">
+                <label for="{{ formulario.foto_perfil.id_for_label }}">Foto de Perfil</label>
+                {{ formulario.foto_perfil }}
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn" onclick="etapaAnterior(3)">Anterior</button>
+                <button type="submit" class="btn btn-primary">Criar Conta</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Exibição de mensagens -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+<script>
+    // Função para validar a etapa 1
+    function validarEtapa1() {
+        const emailInput = document.querySelector('#id_email');
+        const emailError = document.querySelector('#emailError');
+
+        if (!emailInput.checkValidity()) {
+            emailError.style.display = 'block';
+            emailInput.focus();
+        } else {
+            emailError.style.display = 'none';
+            proximaEtapa(1);
+        }
+    }
+
+    // Controle de etapas
+    function proximaEtapa(etapaAtual) {
+        document.getElementById(`step${etapaAtual}`).classList.remove('active');
+        document.getElementById(`step${etapaAtual + 1}`).classList.add('active');
+        document.querySelectorAll('.progress-step')[etapaAtual].classList.add('active');
+    }
+
+    function etapaAnterior(etapaAtual) {
+        document.getElementById(`step${etapaAtual}`).classList.remove('active');
+        document.getElementById(`step${etapaAtual - 1}`).classList.add('active');
+        document.querySelectorAll('.progress-step')[etapaAtual - 1].classList.remove('active');
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConnectExperts - Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <!-- Logo -->
+        <div class="logo">
+            <svg viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 10C31 10 40 19 40 30" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/>
+                <text x="50" y="28" fill="#2563eb" font-size="18" font-weight="bold">ConnectExperts</text>
+            </svg>
+        </div>
+
+        <!-- Login Form -->
+        <form method="POST" action="{% url 'login' %}" id="loginForm">
+            {% csrf_token %}
+            <div class="input-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+
+            <div class="input-group">
+                {{ form.senha.label_tag }}
+                {{ form.senha }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Sign in to your account</button>
+        </form>
+
+        <!-- Messages Section -->
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <!-- Forgot Password -->
+        <div class="forgot-password">
+            <a href="https://connectexperts.com/reset-password">Forgot password?</a>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider">or</div>
+
+        <!-- Social Login -->
+        <div class="social-login">
+            <button type="button" class="btn btn-social" onclick="socialLogin('google')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#EA4335">
+                    <path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12c6.627 0 12-5.372 12-12S18.627 0 12 0zm6.614 6.412c1.034 1.512 1.642 3.35 1.642 5.34 0 .41-.035.81-.103 1.2h-7.146v-3.96h4.11l-.062-.312c-.132-.658-.396-1.264-.772-1.82l.008.012 2.323-.46zm-6.614-3.667c2.496 0 4.73 1.148 6.205 2.947l-2.323.46c-.956-1.354-2.526-2.233-4.299-2.233-2.936 0-5.318 2.382-5.318 5.318 0 2.936 2.382 5.318 5.318 5.318 2.15 0 4-1.284 4.82-3.128h-4.82v-3.96h8.918c.122.636.182 1.293.182 1.958 0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"/>
+                </svg>
+                Google
+            </button>
+            <button type="button" class="btn btn-social" onclick="socialLogin('linkedin')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#0A66C2">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+                LinkedIn
+            </button>
+        </div>
+
+        <!-- Sign Up -->
+        <p class="signup-prompt">
+            Don't have an account? <a href="{% url 'criar_conta' %}">Create your account</a>
+        </p>
+    </div>
+
+    <script>
+        function socialLogin(provider) {
+            console.log(`Initiating ${provider} login flow`);
+            alert(`Redirecting to ${provider} login...`);
+        }
+    </script>
+</body>
+</html>
