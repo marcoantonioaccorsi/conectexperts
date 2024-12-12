@@ -13,3 +13,7 @@ media/
 
 # Static files
 staticfiles/
+
+
+
+*.sqlite3
